@@ -37,6 +37,17 @@ make icon && make app
 `make-app.sh` 会把 `AppIcon.icns` 放进 `Contents/Resources/` 并设置
 `CFBundleIconFile` / `CFBundleIconName`。
 
+## 重新生成候选
+
+提示词全部保存在 `icons/prompts/`（每个候选一份 txt），批量生成脚本在 `scripts/icongen/`：
+
+```bash
+# 先写一份任务清单，格式见 scripts/icongen/jobs.example.json
+node scripts/icongen/generate-icons.mjs my-jobs.json
+```
+
+脚本直接调用已安装的 dsh-image-gen 插件自身的 `image-service.js`，网关、模型、输出目录都与 DSH 内置工具一致。之所以需要它：**DSH 会话在插件加载时只解析一次配置**，若 `~/.dsh/dsh-image-gen.json` 是在会话启动之后写入的，聊天里的 `dsh_image_gen` 会一直报“未配置”——重启 DSH 即可，或用它绕过。
+
 ## 排错记录
 
 生成过程中遇到并修掉的两个问题，留在这里避免重复踩：

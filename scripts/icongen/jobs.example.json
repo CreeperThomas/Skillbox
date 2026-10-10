@@ -1,0 +1,7 @@
+[
+  {
+    "name": "example-gradient-plate",
+    "prompt": "icons/prompts/G2-indigo-violet-plate.txt",
+    "out": "build/icon-candidates/example.png"
+  }
+]
