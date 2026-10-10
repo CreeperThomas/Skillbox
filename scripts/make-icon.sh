@@ -6,11 +6,14 @@
 # continuous-corner radius (~22.37% of the side).
 #
 # Usage: scripts/make-icon.sh [source.png] [out.icns]
+#   ICON_MARGIN (default 1.03) is the padding kept around the detected artwork.
+#   Values near 1.0 fill the icon body; larger values leave more background.
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-SRC="${1:-$ROOT/icons/kept/D-original.png}"
+SRC="${1:-$ROOT/icons/selected.png}"
 OUT="${2:-$ROOT/icons/AppIcon.icns}"
+MARGIN="${ICON_MARGIN:-1.03}"
 PY="${DSH_PYTHON:-/Users/thomas/.dsh/dsh-runtimes/dsh-primary-runtime/dependencies/python/bin/python3}"
 
 [ -f "$SRC" ] || { echo "source not found: $SRC" >&2; exit 1; }
@@ -20,15 +23,15 @@ trap 'rm -rf "$WORK"' EXIT
 ICONSET="$WORK/AppIcon.iconset"
 mkdir -p "$ICONSET"
 
-"$PY" - "$SRC" "$WORK/master.png" <<'PY'
+"$PY" - "$SRC" "$WORK/master.png" "$MARGIN" <<'PY'
 import sys
 import numpy as np
 from PIL import Image, ImageDraw
 
 src, out = sys.argv[1], sys.argv[2]
 CANVAS, BODY = 1024, 824
-MARGIN = 1.18          # padding around the detected artwork, as a multiple of its size
-SS = 4                 # supersampling factor for the corner mask
+MARGIN = float(sys.argv[3])   # padding around the detected artwork, as a multiple of its size
+SS = 4                        # supersampling factor for the corner mask
 
 im = Image.open(src).convert("RGB")
 a = np.asarray(im).astype(int)

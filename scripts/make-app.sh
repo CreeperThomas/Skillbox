@@ -10,7 +10,7 @@ done
 # Regenerate the app icon from the selected candidate when it is missing, then
 # bundle it. Keeping the .icns in the repo keeps builds reproducible offline.
 ICNS="$ROOT/icons/AppIcon.icns"
-if [ ! -f "$ICNS" ] && [ -f "$ROOT/icons/kept/D-original.png" ]; then
+if [ ! -f "$ICNS" ] && [ -f "$ROOT/icons/selected.png" ]; then
     bash "$ROOT/scripts/make-icon.sh" >/dev/null
 fi
 HAS_ICON=0
