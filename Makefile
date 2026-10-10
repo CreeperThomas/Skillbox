@@ -1,5 +1,5 @@
 SHELL := /bin/bash
-.PHONY: test build app run
+.PHONY: test build app run icon
 
 test:
 	bash scripts/swift-env.sh swift test --disable-sandbox --disable-xctest --enable-swift-testing
@@ -7,6 +7,9 @@ test:
 
 build:
 	bash scripts/swift-env.sh swift build --disable-sandbox -c release
+
+icon:
+	bash scripts/make-icon.sh
 
 app: build
 	bash scripts/make-app.sh
